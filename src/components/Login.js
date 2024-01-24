@@ -1,21 +1,20 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
+    axios.defaults.withCredentials = true;
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:3111/api/users/login', {email,password})
-        .then((res)=>{
-            console.log(res.data)
+        axios.post('http://localhost:3111/api/users/login',{email,password})
+        .then(res => {
+           console.log(res.data)
         })
-        .catch((err)=>{
-            console.log(err)
-        })
+        .catch(err => console.log(err))
     }
   return (
     <div className="d-flex justify-content-center align-items-center bg-secondary vh-100">
@@ -36,7 +35,7 @@ const Login = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="email">
+            <label htmlFor="password">
               <strong>Password</strong>
             </label>
             <input
