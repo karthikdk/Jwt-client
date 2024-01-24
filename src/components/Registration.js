@@ -10,7 +10,7 @@ const Registration = () => {
         e.preventDefault()
         axios.post('http://localhost:3111/api/users/register',{name,email,password})
             .then((res)=>{
-                console.log(res.data)
+               navigate('/login')
             })
             .catch((err)=>{
                 console.log(err)
