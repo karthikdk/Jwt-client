@@ -1,11 +1,15 @@
 import React from 'react'
 import Registration from './components/Registration'
+import { Route, Routes } from 'react-router-dom'
+import Home from './components/Home'
 
 const App = () => {
   return (
-    <div className='container'>
-      <h1>App</h1>
-      <Registration></Registration>
+    <div className='container-fluid'>
+     <Routes>
+        <Route path='/' element={<Home/>}></Route>
+        <Route path='/register' element={<Registration/>}></Route>
+     </Routes>
     </div>
   )
 }

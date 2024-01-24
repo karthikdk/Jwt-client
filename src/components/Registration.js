@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import axios from 'axios'
 const Registration = () => {
     const [name, setName] = useState()
     const [email, setEmail] = useState()
@@ -8,6 +8,13 @@ const Registration = () => {
     const navigate = useNavigate()
     const handleSubmit = (e) => {
         e.preventDefault()
+        axios.post('http://localhost:3111/api/users/register',{name,email,password})
+            .then((res)=>{
+                console.log(res.data)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
     }
   return (
     <div className="d-flex justify-content-center align-items-center bg-secondary vh-100">
