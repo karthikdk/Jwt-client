@@ -1,18 +1,23 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-// import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
 
     axios.defaults.withCredentials = true;
     const handleSubmit = (e) => {
         e.preventDefault()
         axios.post('http://localhost:3111/api/users/login',{email,password})
         .then(res => {
-           console.log(res.data)
+            console.log(res)
+           if(res.data.Login){
+            navigate('/dashboard')
+           }else{
+            navigate('/')
+           }
         })
         .catch(err => console.log(err))
     }
@@ -52,7 +57,7 @@ const Login = () => {
           </form>
           <p>Don't Have Account?</p>
           <button className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
-            Register
+          <Link to='/register'>Register</Link>
           </button>
         
       </div>

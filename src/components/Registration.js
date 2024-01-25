@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 const Registration = () => {
     const [name, setName] = useState()
@@ -65,7 +65,7 @@ const Registration = () => {
         </form>
         <p>Already Have an Account</p>
         <button className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
-          Login
+         <Link to='/login'>Login</Link>
         </button>
       
     </div>
