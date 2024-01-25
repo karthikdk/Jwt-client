@@ -5,10 +5,37 @@ const Registration = () => {
     const [name, setName] = useState()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
+    const [errors,setErrors]=useState({})
     const navigate = useNavigate()
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:3111/api/users/register',{name,email,password})
+        const formData={
+            name:name,
+            email:email,
+            password:password
+        }
+         //validations
+         const validationErrors={}
+
+         if(!formData?.name?.trim()) {
+             validationErrors.name = "username is required"
+         }
+         if(!formData?.email?.trim()) {
+             validationErrors.email = "email is required"
+         } else if(!/\S+@\S+\.\S+/.test(formData.email)){
+             validationErrors.email = "email is not valid"
+         }
+         if(!formData?.password?.trim()) {
+             validationErrors.password = "password is required"
+         } else if(formData.password.length < 6){
+             validationErrors.password = "password should be at least 6 char"
+         }
+         setErrors(validationErrors)
+ 
+         if(Object.keys(validationErrors).length === 0) {
+             alert("Successfully Registered")
+         }
+        axios.post('http://localhost:3111/api/users/register',formData)
             .then((res)=>{
                navigate('/login')
             })
@@ -29,10 +56,11 @@ const Registration = () => {
             type="text"
             placeholder="Enter Name"
             autoComplete="off"
-            name="email"
+            name="name"
             className="form-control rounded-0"
             onChange={(e) => setName(e.target.value)}
           />
+           {errors.name && <span style={{color:'red'}}>{errors.name}</span>}
         </div>
         <div className="mb-3">
           <label htmlFor="email">
@@ -46,6 +74,7 @@ const Registration = () => {
             className="form-control rounded-0"
             onChange={(e) => setEmail(e.target.value)}
           />
+           {errors.email && <span style={{color:'red'}}>{errors.email}</span>}
         </div>
         <div className="mb-3">
           <label htmlFor="email">
@@ -58,6 +87,7 @@ const Registration = () => {
             className="form-control rounded-0"
             onChange={(e) => setPassword(e.target.value)}
           />
+           {errors.password && <span style={{color:'red'}}>{errors.password}</span>}
         </div>
         <button type="submit" className="btn btn-success w-100 rounded-0">
           Register

@@ -5,12 +5,35 @@ import { Link, useNavigate } from 'react-router-dom'
 const Login = () => {
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
+    const[errors,setErrors]=useState({})
     const navigate = useNavigate()
 
     axios.defaults.withCredentials = true;
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:3111/api/users/login',{email,password})
+        const formData={
+            email:email,
+            password:password
+        }
+        
+        //validations
+        const validationErrors={}
+        if(!formData?.email?.trim()) {
+            validationErrors.email = "email is required"
+        } else if(!/\S+@\S+\.\S+/.test(formData.email)){
+            validationErrors.email = "email is not valid"
+        }
+        if(!formData?.password?.trim()) {
+            validationErrors.password = "password is required"
+        } else if(formData.password.length < 6){
+            validationErrors.password = "password should be at least 6 char"
+        }
+        setErrors(validationErrors)
+
+        if(Object.keys(validationErrors).length === 0) {
+            alert("Form Submitted successfully")
+        }
+        axios.post('http://localhost:3111/api/users/login',formData)
         .then(res => {
             console.log(res)
            if(res.data.Login){
@@ -38,6 +61,7 @@ const Login = () => {
               className="form-control rounded-0"
               onChange={(e) => setEmail(e.target.value)}
             />
+             {errors.email && <span style={{color:'red'}}>{errors.email}</span>} 
           </div>
           <div className="mb-3">
             <label htmlFor="password">
@@ -50,6 +74,7 @@ const Login = () => {
               className="form-control rounded-0"
               onChange={(e) => setPassword(e.target.value)}
             />
+             {errors.password && <span style={{color:'red'}}>{errors.password}</span>}
           </div>
           <button type="submit" className="btn btn-success w-100 rounded-0">
             Login
